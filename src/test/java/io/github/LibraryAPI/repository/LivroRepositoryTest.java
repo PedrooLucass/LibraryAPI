@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
@@ -33,7 +34,7 @@ class LivroRepositoryTest {
         }
 
         livro.setIsbn("64654-58746");
-        livro.setTitulo("Programação para Platelmintos");
+        livro.setTitulo("Programação 2 para Platelmintos");
         livro.setPreco(BigDecimal.valueOf(75.59));
         livro.setGenero(GeneroLivro.CIENCIA);
         livro.setData_lancamento(LocalDate.now());
@@ -69,7 +70,7 @@ class LivroRepositoryTest {
 
     @Test
     void deletarTest() {
-        UUID id = UUID.fromString("913c29ba-0570-4910-af76-3b7e167106eb");
+        UUID id = UUID.fromString("59a84673-06c3-47b9-a32a-4fedc0f33aab");
 
         if (repository.findById(id).isEmpty()) {
             System.out.println("Livro não encontrado");
@@ -92,5 +93,26 @@ class LivroRepositoryTest {
 
         System.out.println("Livro: " + livro.getTitulo());
         System.out.println("Autor(a):" + livro.getAutor());
+    }
+
+    @Test
+    void pesquisaPorIsbnTest() {
+        List<Livro> livroList = repository.findByIsbn("64654-58746");
+        livroList.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisaPorTituloTest() {
+        List<Livro> livroList = repository.findByTitulo("Platelmintos");
+        livroList.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisaPorTituloEPrecoTest() {
+        BigDecimal preco = BigDecimal.valueOf(75.59);
+        String titulo = "Física para Platelmintos";
+
+        List<Livro> livroList = repository.findByTituloAndPreco(titulo, preco);
+        livroList.forEach(System.out::println);
     }
 }
