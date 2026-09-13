@@ -6,6 +6,7 @@ import io.github.LibraryAPI.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,7 +26,7 @@ class LivroRepositoryTest {
     void salvarTest() {
         Livro livro = new Livro();
 
-        UUID autorId = UUID.fromString("f91d2c42-18b7-4ea1-b56b-d86909647ee0");
+        UUID autorId = UUID.fromString("68dafe05-6a39-4232-a3f1-62428b4cfe8a");
         // Lucas: 5205d584-653f-49bd-8383-b522adf3d2f9  Maria: f91d2c42-18b7-4ea1-b56b-d86909647ee0
 
         if (autorRepository.findById(autorId).isEmpty()) {
@@ -33,9 +34,9 @@ class LivroRepositoryTest {
             return;
         }
 
-        livro.setIsbn("64654-58746");
-        livro.setTitulo("Programação 2 para Platelmintos");
-        livro.setPreco(BigDecimal.valueOf(75.59));
+        livro.setIsbn("12378-69271");
+        livro.setTitulo("Usuarios Burros para Platelmintos");
+        livro.setPreco(BigDecimal.valueOf(5.99));
         livro.setGenero(GeneroLivro.CIENCIA);
         livro.setData_lancamento(LocalDate.now());
 
@@ -117,7 +118,7 @@ class LivroRepositoryTest {
     }
 
     @Test
-    void pesquisaPorTituloContendo() {
+    void pesquisaPorTituloContendoTest() {
         String titulo = "Platelmintos";
 
         List<Livro> livroList = repository.findByTituloContainingIgnoreCase(titulo);
@@ -125,27 +126,50 @@ class LivroRepositoryTest {
     }
 
     @Test
-    void listarLivrosComQuery() {
+    void listarLivrosComQueryTest() {
         List<Livro> livroList = repository.listarTodosOrdenadosPorTituloEPreco();
         livroList.forEach(System.out::println);
     }
 
     @Test
-    void listarAutoresComLivros() {
+    void listarAutoresComLivrosTest() {
         List<Autor> autorList = repository.listarTodosAutoresComLivros();
         autorList.forEach(System.out::println);
     }
 
     @Test
-    void listarTitulosSemRepetir() {
+    void listarTitulosSemRepetirTest() {
         List<String> livroList = repository.listarNomesDeDiferentesLivros();
         livroList.forEach(System.out::println);
     }
 
     @Test
-    void listarGenerosBrasileiros() {
+    void listarGenerosBrasileirosTest() {
         List<GeneroLivro> livroList = repository.listarGenerosBrasileiros();
         livroList.forEach(System.out::println);
     }
 
+    @Test
+    void listarGeneroComQueryParamTest() {
+        var livroList = repository.findByGenero(GeneroLivro.CIENCIA,  Sort.by("titulo").ascending());
+        livroList.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGeneroComQueryPositionalParamTest() {
+        var livroList = repository.findByGeneroPositionalParam(GeneroLivro.CIENCIA, Sort.by("data_lancamento").ascending());
+        livroList.forEach(System.out::println);
+    }
+
+    @Test
+    void deletarPorGeneroTest() {
+        repository.deleteByGenero(GeneroLivro.MISTERIO);
+    }
+
+    @Test
+    void uptadeDataLancamentoTest() {
+        UUID id = UUID.fromString("2b09ebe8-55a6-470e-9cd9-5e9c8decb75e");
+
+        repository.updateDataDePublicacao(id, LocalDate.of(2777, 1, 1));
+    }
 }

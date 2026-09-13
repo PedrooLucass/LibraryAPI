@@ -27,9 +27,9 @@ public class AutorRepositoryTest {
     @Test
     public void salvarTest() {
         Autor autor = new Autor();
-        autor.setNome("Maria");
+        autor.setNome("BugDaSilva");
         autor.setNacionalidade("Brasileira");
-        autor.setData_nascimento(LocalDate.of(1970, 1, 1));
+        autor.setData_nascimento(LocalDate.of(1999, 12, 31));
 
         var autorSalvo = repository.save(autor);
 
@@ -67,7 +67,7 @@ public class AutorRepositoryTest {
 
     @Test
     public void deleteTest() {
-        var id = UUID.fromString("d740c9cc-b672-41f9-a733-37dc0c3223ad");
+        var id = UUID.fromString("68dafe05-6a39-4232-a3f1-62428b4cfe8a");
 
         String opcao = "PorObjeto"; // "PorID" ou "PorObjeto"
 
@@ -76,11 +76,16 @@ public class AutorRepositoryTest {
             return;
         }
 
+        Autor autor = repository.findById(id).get();
+        if (!livroRepository.findByAutor(autor).isEmpty()) {
+            List<Livro> livrosList = livroRepository.findByAutor(autor);
+            livroRepository.deleteAll(livrosList);
+        }
+
         if(opcao.equals("PorID")) {
             repository.deleteById(id);
         } else if (opcao.equals("PorObjeto")) {
-            var objeto = repository.findById(id).get();
-            repository.delete(objeto);
+            repository.delete(autor);
         }
     }
 
