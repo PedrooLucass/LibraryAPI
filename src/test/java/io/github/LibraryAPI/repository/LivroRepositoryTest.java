@@ -110,9 +110,42 @@ class LivroRepositoryTest {
     @Test
     void pesquisaPorTituloEPrecoTest() {
         BigDecimal preco = BigDecimal.valueOf(75.59);
-        String titulo = "Física para Platelmintos";
+        String titulo = "Física Quântica para Platelmintos";
 
         List<Livro> livroList = repository.findByTituloAndPreco(titulo, preco);
         livroList.forEach(System.out::println);
     }
+
+    @Test
+    void pesquisaPorTituloContendo() {
+        String titulo = "Platelmintos";
+
+        List<Livro> livroList = repository.findByTituloContainingIgnoreCase(titulo);
+        livroList.forEach(System.out::println);
+    }
+
+    @Test
+    void listarLivrosComQuery() {
+        List<Livro> livroList = repository.listarTodosOrdenadosPorTituloEPreco();
+        livroList.forEach(System.out::println);
+    }
+
+    @Test
+    void listarAutoresComLivros() {
+        List<Autor> autorList = repository.listarTodosAutoresComLivros();
+        autorList.forEach(System.out::println);
+    }
+
+    @Test
+    void listarTitulosSemRepetir() {
+        List<String> livroList = repository.listarNomesDeDiferentesLivros();
+        livroList.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosBrasileiros() {
+        List<GeneroLivro> livroList = repository.listarGenerosBrasileiros();
+        livroList.forEach(System.out::println);
+    }
+
 }

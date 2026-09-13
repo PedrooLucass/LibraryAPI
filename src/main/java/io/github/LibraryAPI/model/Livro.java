@@ -37,7 +37,7 @@ public class Livro {
 
     @ManyToOne(
 //            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY
     )
     @JoinColumn(name = "id_autor")
     private Autor autor;
