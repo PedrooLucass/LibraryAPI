@@ -26,8 +26,7 @@ class LivroRepositoryTest {
     void salvarTest() {
         Livro livro = new Livro();
 
-        UUID autorId = UUID.fromString("68dafe05-6a39-4232-a3f1-62428b4cfe8a");
-        // Lucas: 5205d584-653f-49bd-8383-b522adf3d2f9  Maria: f91d2c42-18b7-4ea1-b56b-d86909647ee0
+        UUID autorId = UUID.fromString("17ab0832-2d03-4356-9d31-e10ca47430bd");
 
         if (autorRepository.findById(autorId).isEmpty()) {
             System.out.println("Autor não encontrado");
@@ -35,7 +34,7 @@ class LivroRepositoryTest {
         }
 
         livro.setIsbn("12378-69271");
-        livro.setTitulo("Usuarios Burros para Platelmintos");
+        livro.setTitulo("Teoria Músical para Platelmintos");
         livro.setPreco(BigDecimal.valueOf(5.99));
         livro.setGenero(GeneroLivro.CIENCIA);
         livro.setData_lancamento(LocalDate.now());

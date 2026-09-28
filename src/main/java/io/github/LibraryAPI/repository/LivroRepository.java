@@ -44,24 +44,24 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     List<String> listarNomesDeDiferentesLivros();
 
     @Query("""
-        select distinct l.genero 
-        from Livro as l 
-        join l.autor as a 
-        where a.nacionalidade = 'Brasileira' 
+        select distinct l.genero
+        from Livro as l
+        join l.autor as a
+        where a.nacionalidade = 'Brasileira'
         order by l.genero
    """)
     List<GeneroLivro> listarGenerosBrasileiros();
 
     @Query("""
-    select l 
-    from Livro as l 
+    select l
+    from Livro as l
     where l.genero = :paramGenero
 """) // named parameters
     List<Livro> findByGenero(@Param("paramGenero") GeneroLivro genero, Sort paramOrdenacao);
 
     @Query("""
-    select l 
-    from Livro l 
+    select l
+    from Livro l
     where l.genero = ?1
 """) // positional parameters
     List<Livro> findByGeneroPositionalParam(GeneroLivro genero, Sort sort);
@@ -75,4 +75,7 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     @Transactional
     @Query(" update Livro set data_lancamento = ?2 where id = ?1 ")
     void updateDataDePublicacao(UUID id, LocalDate novaData);
+
+    boolean existsByAutor(Autor autor);
+
 }
