@@ -85,11 +85,16 @@ public class AutorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AutorDTO>> pesquisar(
+    public ResponseEntity<Object> pesquisar(
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
 
-        List<Autor> autorList = autorService.pesquisar(nome, nacionalidade);
+        if (nome.length() < 3 || nacionalidade.length() < 3) {
+            var erroDTO = ErroResposta.respostaPadrao("Mínimo de 3 letras para pesquisar");
+            return ResponseEntity.badRequest().body(erroDTO);
+        }
+
+        List<Autor> autorList = autorService.pesquisarByExample(nome, nacionalidade);
 
         if (autorList.isEmpty()) {
             return ResponseEntity.notFound().build();
